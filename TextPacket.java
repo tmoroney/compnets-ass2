@@ -9,27 +9,27 @@ import java.io.ObjectOutputStream;
  * Class for packet content that represents acknowledgements
  *
  */
-public class ReqPacketContent extends PacketContent {
+public class TextPacket extends PacketContent {
 
-	String info;
+	String text;
 
 	/**
-	 * Constructor that takes in information about a file.
-	 * @param Info Information about the file.
+	 * Constructor that takes in string.
+	 * @param text Text string.
 	 */
-	ReqPacketContent(String info) {
-		type= REQPACKET; // equal to 10 (value to identify)
-		this.info = info;
+	TextPacket(String text) {
+		type= TEXTPACKET; // equal to 10 (value to identify)
+		this.text = text;
 	}
 
 	/**
 	 * Constructs an object out of a datagram packet.
-	 * @param packet Packet that contains information about a file.
+	 * @param packet Packet that contains a string.
 	 */
-	protected ReqPacketContent(ObjectInputStream oin) { // when receive a packet it comes as ObjectInputStream (string)
+	protected TextPacket(ObjectInputStream oin) { // when receive a packet it comes as ObjectInputStream (string)
 		try {
-			type= REQPACKET; // just assigning
-			info= oin.readUTF(); // takes content and turns it back into original form - must change to readbytes etc to read data
+			type= TEXTPACKET;    // just assigning
+			text= oin.readUTF(); // takes content and turns it back into original form - must change to readbytes etc to read data
 		}
 		catch(Exception e) {e.printStackTrace();}
 	}
@@ -40,7 +40,7 @@ public class ReqPacketContent extends PacketContent {
 	 */
 	protected void toObjectOutputStream(ObjectOutputStream oout) { // converts to UTF8 for transfer
 		try {
-			oout.writeUTF(info); // UTF8 encoding
+			oout.writeUTF(text); // UTF8 encoding
 		}
 		catch(Exception e) {e.printStackTrace();} //
 	}
@@ -53,7 +53,7 @@ public class ReqPacketContent extends PacketContent {
 	 * @return Returns the content of the packet as String.
 	 */
 	public String toString() {
-		return "REQ:" + info;
+		return "Content:" + text;
 	}
 
 	/**
@@ -62,6 +62,6 @@ public class ReqPacketContent extends PacketContent {
 	 * @return Returns the info contained in the packet.
 	 */
 	public String getPacketInfo() {
-		return info;
+		return text;
 	}
 }

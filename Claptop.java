@@ -5,12 +5,11 @@
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
  *
- * Client class
+ * Claptop class
  *
  * An instance accepts user input
  *
@@ -44,10 +43,10 @@ public class Claptop extends Node {
 		try {
 			PacketContent content = PacketContent.fromDatagramPacket(packet);
 			
-			if (content.getType() == PacketContent.DATAPACKET) {
-				MyPacket inPacket = ((MyPacket)content);
-				String s = new String(inPacket.byteArray, StandardCharsets.UTF_8);
-				String output = s.substring(13); // remove destination and header
+			if (content.getType() == PacketContent.TEXTPACKET) {
+				TextPacket inPacket = ((TextPacket)content);
+				String s = inPacket.text;
+				String output = s.substring(3); // remove destination and header
 				System.out.println(output + "\n");
 				notify();
 			}
@@ -80,7 +79,7 @@ public class Claptop extends Node {
 			input = "000" + input;
     
 		    DatagramPacket request;
-            request = new MyPacket(input.getBytes()).toDatagramPacket();
+            request = new TextPacket(input).toDatagramPacket();
             request.setSocketAddress(dstAddress);
             socket.send(request);
 		    this.wait();

@@ -5,7 +5,6 @@
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
-import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 public class CP extends Node {
@@ -40,11 +39,10 @@ public class CP extends Node {
 
 			PacketContent content= PacketContent.fromDatagramPacket(packet);
 
-			if (content.getType()==PacketContent.DATAPACKET) {
+			if (content.getType()==PacketContent.TEXTPACKET) {
 				currentPacket = packet;
-				MyPacket inPacket = ((MyPacket)content);
-			    String s = new String(inPacket.byteArray, StandardCharsets.UTF_8);
-				dest = s.substring(10, 13); // isolate destination at beginning of packet
+				TextPacket inPacket = ((TextPacket)content);
+			    dest = (inPacket.text).substring(0, 3); // isolate destination at beginning of packet
 			
 				if (nextJump.containsKey(dest)) {
 					int destPort = nextJump.get(dest);

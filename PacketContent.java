@@ -16,7 +16,7 @@ import java.io.ObjectOutputStream;
  */
 public abstract class PacketContent {
 
-	public static final int REQPACKET= 10; // value to differentiate (nothing important)
+	public static final int TEXTPACKET= 10; // value to differentiate (nothing important)
 	public static final int DATAPACKET= 100; // other type of packet for sending byte arrays
 	public static final int NEXTNODE= 200;
 
@@ -43,8 +43,8 @@ public abstract class PacketContent {
 			type= oin.readInt();  // read type from beginning of packet
 
 			switch(type) {   // depending on type create content object
-			case REQPACKET:
-				content= new ReqPacketContent(oin);
+			case TEXTPACKET:
+				content= new TextPacket(oin);
 				break;
 			case DATAPACKET:
 			    content= new MyPacket(data);
