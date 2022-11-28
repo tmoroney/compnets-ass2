@@ -7,16 +7,14 @@ import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 
-public class ISP extends Node {
+public class GW2 extends Node {
 	static final int CONTROLLER_PORT = 50000;
-	static final int GW1_PORT = 50003;
-	static final int GW2_PORT = 50004;
-	static final int ISP_PORT = 50005; // <---- current node
-	static final int CP_PORT = 50006;
+    static final int PLAPTOP_PORT = 50002;
+	static final int GW2_PORT = 50004; // <---- current node
+	static final int ISP_PORT = 50005;
+	static final String PLAPTOP_NODE = "Plaptop";
+	static final String ISP_NODE = "ISP";
 	static final String CONTROLLER_NODE = "Controller";
-	static final String GW1_NODE = "GW1";
-	static final String GW2_NODE = "GW2";
-	static final String CP_NODE = "CP";
 
 	InetSocketAddress dstAddress;
 	HashMap<String, Integer> nextJump = new HashMap<>(); // stores the jump after asking the controller so there is no need to ask again
@@ -24,11 +22,10 @@ public class ISP extends Node {
 	DatagramPacket currentPacket;
 	String dest; // destination of incoming packet
 
-	ISP(int port) {
+	GW2(int port) {
 		try {
-			nodeList.put(GW1_PORT, GW1_NODE);
-			nodeList.put(GW2_PORT, GW2_NODE);
-			nodeList.put(CP_PORT, CP_NODE);
+			nodeList.put(PLAPTOP_PORT, PLAPTOP_NODE);
+			nodeList.put(ISP_PORT, ISP_NODE);
 			socket= new DatagramSocket(port);
 			listener.go();
 		}
@@ -86,7 +83,7 @@ public class ISP extends Node {
 
 	public static void main(String[] args) {
 		try {
-			(new ISP(ISP_PORT)).start();
+			(new GW2(GW2_PORT)).start();
 			System.out.println("Program completed");
 		} catch(java.lang.Exception e) {e.printStackTrace();}
 	}

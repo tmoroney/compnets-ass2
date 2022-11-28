@@ -8,12 +8,12 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 
 public class GW1 extends Node {
-    static final int CLAPTOP_PORT = 50000;
-	static final int GW1_PORT = 50001;      // current node
-	static final int ISP_PORT = 50002;
+	static final int CONTROLLER_PORT = 50000;
+    static final int CLAPTOP_PORT = 50001;
+	static final int GW1_PORT = 50003; // <---- current node
+	static final int ISP_PORT = 50005;
 	static final String CLAPTOP_NODE = "Claptop";
 	static final String ISP_NODE = "ISP";
-	static final int CONTROLLER_PORT = 50004;
 	static final String CONTROLLER_NODE = "Controller";
 
 	InetSocketAddress dstAddress;
@@ -42,7 +42,7 @@ public class GW1 extends Node {
 			if (content.getType()==PacketContent.TEXTPACKET) {
 				currentPacket = packet;
 				TextPacket inPacket = ((TextPacket)content);
-			    dest = (inPacket.text).substring(0, 3); // isolate destination at beginning of packet
+			    dest = (inPacket.text).substring(0, 3); // isolate destination of packet
 			
 				if (nextJump.containsKey(dest)) {
 					int destPort = nextJump.get(dest);

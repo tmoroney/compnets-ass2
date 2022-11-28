@@ -14,11 +14,11 @@ import java.util.Scanner;
  * An instance accepts user input
  *
  */
-public class Claptop extends Node {
-	static final int CLAPTOP_PORT = 50001;
-	static final String CLAPTOP_ID = "010";
-	static final int GW1_PORT = 50003;
-	static final String GW1_NODE = "GW1";
+public class Plaptop extends Node {
+	static final int PLAPTOP_PORT = 50002;
+	static final String PLAPTOP_ID = "011";
+	static final int GW2_PORT = 50004;
+	static final String GW2_NODE = "GW2";
 	InetSocketAddress dstAddress;
 
 	/**
@@ -26,7 +26,7 @@ public class Claptop extends Node {
 	 *
 	 * Attempts to create socket at given port and create an InetSocketAddress for the destinations
 	 */
-	Claptop(String dstHost, int dstPort, int srcPort) {
+	Plaptop(String dstHost, int dstPort, int srcPort) {
 		try {
 			dstAddress= new InetSocketAddress(dstHost, dstPort);
 			socket= new DatagramSocket(srcPort);
@@ -63,14 +63,14 @@ public class Claptop extends Node {
 		Scanner scanner = new Scanner(System.in);
 		while (true) {
 			System.out.print("Would you like to check your balance (1) or make a deposit (2)? ");
-		    String input = scanner.next();
+		    String input = scanner.nextLine();
 			if (input.equals("exit")) {
 				scanner.close();
 				return;
 			}
 			else if (input.equals("2")) {
 				System.out.print("Enter an amount to deposit: ");
-				input = scanner.next();
+				input = scanner.nextLine();
 			}
 			else {
 				input = "balance";
@@ -101,7 +101,7 @@ public class Claptop extends Node {
 					dest = "000";
 			}
 			
-			input = dest + CLAPTOP_ID + input; // add identifier so DServer knows where to send the packet back to
+			input = dest + PLAPTOP_ID + input; // add identifier so DServer knows where to send the packet back to
     
 		    DatagramPacket request;
             request = new TextPacket(input).toDatagramPacket();
@@ -119,7 +119,7 @@ public class Claptop extends Node {
 	 */
 	public static void main(String[] args) {
 		try {
-			(new Claptop(GW1_NODE, GW1_PORT, CLAPTOP_PORT)).start();
+			(new Plaptop(GW2_NODE, GW2_PORT, PLAPTOP_PORT)).start();
 			System.out.println("Program completed");
 		} catch(java.lang.Exception e) {e.printStackTrace();}
 	}

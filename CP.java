@@ -8,13 +8,15 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 
 public class CP extends Node {
-	static final int ISP_PORT = 50002;     // source
-	static final int CP_PORT = 50003;      // current
-	static final int DSERVER_PORT = 50005; // dest
+	static final int CONTROLLER_PORT = 50000;
+	static final int ISP_PORT = 50005;
+	static final int CP_PORT = 50006; // <---- current node
+	static final int DSERVER_PORT = 50007;
+	static final int DSERVER2_PORT = 50008;
+	static final String CONTROLLER_NODE = "Controller";
 	static final String ISP_NODE = "ISP";
 	static final String DSERVER_NODE = "DServer";
-	static final int CONTROLLER_PORT = 50004;
-	static final String CONTROLLER_NODE = "Controller";
+	static final String DSERVER2_NODE = "DServer2";
 	
 	InetSocketAddress dstAddress;
 	HashMap<String, Integer> nextJump = new HashMap<>(); // stores the jump after asking the controller so there is no need to ask again
@@ -26,6 +28,7 @@ public class CP extends Node {
 		try {
 			nodeList.put(ISP_PORT, ISP_NODE);
 			nodeList.put(DSERVER_PORT, DSERVER_NODE);
+			nodeList.put(DSERVER2_PORT, DSERVER2_NODE);
 			socket= new DatagramSocket(port);
 			listener.go();
 		}
@@ -42,7 +45,7 @@ public class CP extends Node {
 			if (content.getType()==PacketContent.TEXTPACKET) {
 				currentPacket = packet;
 				TextPacket inPacket = ((TextPacket)content);
-			    dest = (inPacket.text).substring(0, 3); // isolate destination at beginning of packet
+			    dest = (inPacket.text).substring(0, 3); // isolate destination of packet
 			
 				if (nextJump.containsKey(dest)) {
 					int destPort = nextJump.get(dest);

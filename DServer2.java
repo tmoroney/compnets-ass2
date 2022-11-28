@@ -6,14 +6,14 @@ import java.net.DatagramSocket;
 import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 
-public class DServer extends Node {
-    static final int DSERVER_PORT = 50007; // current
+public class DServer2 extends Node {
+    static final int DSERVER2_PORT = 50008; // current
 	static final int CP_PORT = 50006;      // cloud provider
     static final String CP_NODE = "CP";
     InetSocketAddress dstAddress;
 	double balance = 100;
 
-	DServer(int port) {
+	DServer2(int port) {
 		try {
 			socket= new DatagramSocket(port);
 			listener.go();
@@ -46,14 +46,14 @@ public class DServer extends Node {
 					System.out.println("Checking Account Balance...");
 		        	System.out.println("Balance is: $" + balance);
 
-					returnString = dest + "Your current balance is $" + balance + " (Bank Account 1)";
+					returnString = dest + "Your current balance is $" + balance + " (Bank Account 2)";
 					returnPacket = new TextPacket(returnString);
 					sendReturnPacket(returnPacket);
 				}
 				else if (Character.isDigit(s.charAt(0))) {
 					double deposit = Double.parseDouble(s.trim());
 					balance = balance + deposit;
-					returnString = dest + "Deposit was successful - new balance is $" + balance  + " (Bank Account 1)";
+					returnString = dest + "Deposit was successful - new balance is $" + balance + " (Bank Account 2)";
 					returnPacket = new TextPacket(returnString);
 					sendReturnPacket(returnPacket);
 				}
@@ -61,6 +61,7 @@ public class DServer extends Node {
 		}
 		catch(Exception e) {e.printStackTrace();}
 	}
+
 
 	public void sendReturnPacket(TextPacket myPacket) { // change to send byte array packet instead
 		try {
@@ -81,7 +82,7 @@ public class DServer extends Node {
 
 	public static void main(String[] args) {
 		try {
-			(new DServer(DSERVER_PORT)).start();
+			(new DServer2(DSERVER2_PORT)).start();
 			System.out.println("Program completed");
 		} catch(java.lang.Exception e) {e.printStackTrace();}
 	}
