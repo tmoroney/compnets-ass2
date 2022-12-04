@@ -17,8 +17,9 @@ import java.io.ObjectOutputStream;
 public abstract class PacketContent {
 
 	public static final int TEXTPACKET= 10; // value to differentiate (nothing important)
-	public static final int DATAPACKET= 100; // other type of packet for sending byte arrays
-	public static final int NEXTNODE= 200;
+	public static final int NEXTNODE= 100;
+	public static final int ACKPACKET= 200;
+	public static final int DATAPACKET= 300; // NOT USED
 
 	int type= 0;
 
@@ -46,11 +47,11 @@ public abstract class PacketContent {
 			case TEXTPACKET:
 				content= new TextPacket(oin);
 				break;
-			case DATAPACKET:
-			    content= new MyPacket(data);
-				break;
 			case NEXTNODE:
 				content= new JumpPacket(oin);
+				break;
+			case ACKPACKET:
+				content= new AckPacketContent(oin);
 				break;
 			default:
 				content= null;

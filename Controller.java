@@ -7,6 +7,8 @@ import java.net.DatagramPacket;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Controller extends Node {
     static final int CONTROLLER_PORT = 50000; // current
@@ -20,6 +22,8 @@ public class Controller extends Node {
 	static final int DSERVER2_PORT = 50008;
     InetSocketAddress dstAddress;
 	HashMap<String, ArrayList<int[]>> map = new HashMap<String, ArrayList<int[]>>(); // stores paths to destinations
+	Timer t; //declare timer t
+	DatagramPacket returnPacket;
 
 	Controller(int port) {
 		try {
@@ -71,18 +75,36 @@ public class Controller extends Node {
 						{
 							JumpPacket nextJump = new JumpPacket(array[j+1]);
 							System.out.println("Next jump is to port: " + nextJump);
-							DatagramPacket returnPacket = nextJump.toDatagramPacket();
+							returnPacket = nextJump.toDatagramPacket();
 							returnPacket.setSocketAddress(packet.getSocketAddress());
 							socket.send(returnPacket);
 							foundJump = true;
 						}
 					}
 				}
+				t = new Timer();
+				int seconds = 5;
+				t.schedule(new rt(), seconds*1000); //schedule the timer
 			}
+			else if (content.getType()==PacketContent.ACKPACKET) {
+				t.cancel(); //stop the thread of timer
+				System.out.println("Received acknowledgment: " + ((TextPacket)content).getPacketInfo());
+			}
+			
 		}
 		catch(Exception e) {e.printStackTrace();}
 	}
-		
+
+	//sub class that extends TimerTask
+	class rt extends TimerTask {
+		public void run() {
+			try{
+				socket.send(returnPacket); // Send Packet again if it wasn't received
+			}
+			catch(Exception e) {e.printStackTrace();}
+			t.cancel(); //stop the thread of timer
+		}
+	}
 
 
 	public synchronized void start() throws Exception {
