@@ -101,7 +101,7 @@ public class Claptop extends Node {
 					dest = "000";
 			}
 			
-			input = dest + CLAPTOP_ID + input; // add identifier so DServer knows where to send the packet back to
+			input = dest + CLAPTOP_ID + input; // add return address
     
 		    DatagramPacket request;
             request = new TextPacket(input).toDatagramPacket();

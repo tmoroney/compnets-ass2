@@ -11,7 +11,7 @@ public class DServer2 extends Node {
 	static final int CP_PORT = 50006;      // cloud provider
     static final String CP_NODE = "CP";
     InetSocketAddress dstAddress;
-	double balance = 100;
+	double balance = 200;
 
 	DServer2(int port) {
 		try {

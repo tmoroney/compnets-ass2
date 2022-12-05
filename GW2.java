@@ -39,11 +39,11 @@ public class GW2 extends Node {
 	// handle incoming packets
 	public void onReceipt(DatagramPacket packet) {
 		try {
-			System.out.println("Received packet");
 
 			PacketContent content = PacketContent.fromDatagramPacket(packet);
 
 			if (content.getType() == PacketContent.TEXTPACKET) {
+				System.out.println("Received packet");
 				currentPacket = packet;
 				TextPacket inPacket = ((TextPacket) content);
 				dest = (inPacket.text).substring(0, 3); // isolate destination of packet
@@ -63,10 +63,9 @@ public class GW2 extends Node {
 				}
 			} else if (content.getType() == PacketContent.NEXTNODE) {
 				Random random = new Random();
-				int max = 2;
-				int min = 1;
-				int num = random.nextInt(max - min) + min;
-				if (num == 2) {
+				int num = random.nextInt(6);
+				if (num != 0) {
+					System.out.println("Received packet");
 					JumpPacket inPacket = ((JumpPacket) content);
 					int port = inPacket.getPort();
 
@@ -83,6 +82,9 @@ public class GW2 extends Node {
 					dstAddress = new InetSocketAddress(nodeList.get(port), port);
 					currentPacket.setSocketAddress(dstAddress);
 					socket.send(currentPacket);
+				}
+				else {
+					System.out.println("There was disturbance in the network - next node was not received!!!");
 				}
 			}
 		} catch (Exception e) {

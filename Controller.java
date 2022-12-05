@@ -23,6 +23,7 @@ public class Controller extends Node {
     InetSocketAddress dstAddress;
 	HashMap<String, ArrayList<int[]>> map = new HashMap<String, ArrayList<int[]>>(); // stores paths to destinations
 	Timer t; //declare timer t
+	int seconds = 1;
 	DatagramPacket returnPacket;
 
 	Controller(int port) {
@@ -83,12 +84,11 @@ public class Controller extends Node {
 					}
 				}
 				t = new Timer();
-				int seconds = 5;
 				t.schedule(new rt(), seconds*1000); //schedule the timer
 			}
 			else if (content.getType()==PacketContent.ACKPACKET) {
 				t.cancel(); //stop the thread of timer
-				System.out.println("Received acknowledgment: " + ((TextPacket)content).getPacketInfo());
+				System.out.println("Received acknowledgment: " + ((AckPacketContent)content).getPacketInfo());
 			}
 			
 		}
@@ -100,9 +100,11 @@ public class Controller extends Node {
 		public void run() {
 			try{
 				socket.send(returnPacket); // Send Packet again if it wasn't received
+				t.cancel(); //stop the thread of timer
+				t = new Timer();
+				t.schedule(new rt(), seconds*1000); //schedule the timer
 			}
 			catch(Exception e) {e.printStackTrace();}
-			t.cancel(); //stop the thread of timer
 		}
 	}
 
