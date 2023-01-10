@@ -2,4 +2,4 @@
 Understanding forwarding mechanisms in networking.
 
 Report:
-[Breakdown Document](https://github.com/tmoroney/compnets-ass2/blob/master/CSU33031_Assignment_2_Report.pdf)
+[Breakdown Document](https://drive.google.com/drive/folders/1DMzNr1qICyhccNvOAVa9jtB2kxmflA_X)
